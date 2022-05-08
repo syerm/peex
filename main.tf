@@ -66,3 +66,10 @@ resource "azurerm_subnet_network_security_group_association" "sga" {
   network_security_group_id = azurerm_network_security_group.security-group.id
 }
 
+resource "azurerm_public_ip" "public-ip" {
+  name                = "syer-public-ip"
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = azurerm_resource_group.rg.location
+  allocation_method   = "Dynamic"
+
+}
