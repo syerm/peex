@@ -55,7 +55,7 @@ resource "azurerm_network_security_rule" "security-rules" {
   protocol                    = "*"
   source_port_range           = "*"
   destination_port_range      = "*"
-  source_address_prefix       = "194.44.96.28/32"
+  source_address_prefix       = "194.44.97.15/32"
   destination_address_prefix  = "*"
   resource_group_name         = azurerm_resource_group.rg.name
   network_security_group_name = azurerm_network_security_group.security-group.name
@@ -84,6 +84,35 @@ resource "azurerm_network_interface" "nic" {
     subnet_id                     = azurerm_subnet.subnet.id
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.public-ip.id
+  }
+
+}
+
+resource "azurerm_linux_virtual_machine" "vm" {
+  name                  = "syer-vm"
+  resource_group_name   = azurerm_resource_group.rg.name
+  location              = azurerm_resource_group.rg.location
+  size                  = "Standard_B2s"
+  admin_username        = "syerm"
+  network_interface_ids = [azurerm_network_interface.nic.id]
+
+  custom_data = filebase64("customdata.tpl")
+
+  admin_ssh_key {
+    username   = "syerm"
+    public_key = file("~/.ssh/azurekey.pub")
+  }
+
+  os_disk {
+    caching              = "ReadWrite"
+    storage_account_type = "Standard_LRS"
+  }
+
+  source_image_reference {
+    publisher = "Canonical"
+    offer     = "UbuntuServer"
+    sku       = "18.04-LTS"
+    version   = "latest"
   }
 
 }
