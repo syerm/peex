@@ -116,3 +116,12 @@ resource "azurerm_linux_virtual_machine" "vm" {
   }
 
 }
+
+data "azurerm_public_ip" "ip-data" {
+  name                = azurerm_public_ip.public-ip.name
+  resource_group_name = azurerm_resource_group.rg.name
+}
+
+output "public_ip_address" {
+  value = "${azurerm_linux_virtual_machine.vm.name}: ${data.azurerm_public_ip.ip-data.ip_address}"
+}
