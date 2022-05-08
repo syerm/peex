@@ -12,3 +12,13 @@ terraform {
 provider "azurerm" {
   features {}
 }
+
+resource "azurerm_resource_group" "rg" {
+  name     = "syer-terraform"
+  location = "northeurope"
+  tags = {
+    WBS        = "C.TDI.IT.00010"
+    Subproject = "infra"
+    Project    = "internal"
+  }
+}
