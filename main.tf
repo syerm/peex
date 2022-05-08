@@ -30,3 +30,12 @@ resource "azurerm_virtual_network" "vn" {
   address_space       = ["10.123.0.0/16"]
 
 }
+
+
+resource "azurerm_subnet" "subnet" {
+  name                 = "syer-network"
+  resource_group_name  = azurerm_resource_group.rg.name
+  virtual_network_name = azurerm_virtual_network.vn.name
+  address_prefixes     = ["10.123.1.0/24"]
+
+}
